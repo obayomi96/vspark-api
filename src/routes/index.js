@@ -1,5 +1,7 @@
 import express from 'express';
-// import userRoute from './user';
+import userRoute from './user';
+import ngoRoute from './ngo';
+import volunteerRoute from './volunteer';
 
 const router = express();
 
@@ -10,6 +12,8 @@ router.get('/', (req, res) =>
   })
 );
 
-// router.use('/users', userRoute);
+router.use('/users', userRoute);
+router.use('/ngo', ngoRoute);
+router.use('/volunteer', volunteerRoute);
 
 export default router;

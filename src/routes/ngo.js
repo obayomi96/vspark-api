@@ -1,0 +1,38 @@
+import express from 'express';
+import NgoController from '../controllers/NgoController';
+import middlewares from '../middlewares';
+
+const {
+  ngoLogin,
+  ngoSignup,
+  updateProfile,
+  fetchProfile,
+  confirmEmail,
+  resetPassword,
+  // socialSignin
+} = NgoController;
+
+const {
+  verifyToken,
+  isAdmin
+} = middlewares;
+
+const ngoRoute = express();
+
+ngoRoute.post('/register', ngoSignup);
+ngoRoute.post('/login', ngoLogin);
+ngoRoute.get('/:id', verifyToken, fetchProfile);
+// ngoRoute.get('/', verifyToken, fetchngos);
+ngoRoute.patch('/:id', verifyToken, updateProfile);
+ngoRoute.get('/confirm-email', verifyToken, confirmEmail);
+ngoRoute.patch('/password-reset/:id', verifyToken, resetPassword);
+// ngoRoute.get('/google', passport.authenticate('google', {
+//   scope:
+//   ['https://www.googleapis.com/auth/ngoinfo.profile', 'https://www.googleapis.com/auth/ngoinfo.email']
+// }));
+// ngoRoute.get('/google/callback', passport.authenticate('google', { session: false }), socialSignin);
+
+// ngoRoute.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+// ngoRoute.get('/facebook/callback', passport.authenticate('facebook', { session: false }), socialSignin);
+
+export default ngoRoute;

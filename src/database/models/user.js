@@ -13,10 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       country: DataTypes.STRING,
       state: DataTypes.STRING,
       city: DataTypes.STRING,
-      address: DataTypes.TEXT,
-      interestAreaId: DataTypes.ENUM,
-      skillId: DataTypes.ENUM,
-      sdgId: DataTypes.ENUM,
+      address: DataTypes.TEXT
     },
     {}
   );
