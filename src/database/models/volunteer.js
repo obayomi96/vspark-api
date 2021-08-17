@@ -1,37 +1,26 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Volunteer extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  Volunteer.init({
+  const Volunteer = sequelize.define('Volunteer', {
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    email: DataTypes.STRING,
     phonenumber: DataTypes.STRING,
+    email: DataTypes.STRING,
+    passwords: DataTypes.STRING,
     isVerified: DataTypes.BOOLEAN,
-    password: DataTypes.STRING,
     type: DataTypes.STRING,
     country: DataTypes.STRING,
     state: DataTypes.STRING,
     city: DataTypes.STRING,
     address: DataTypes.TEXT,
     sdgId: DataTypes.INTEGER,
-    skillId: DataTypes.INTEGER,
-    interestAreaId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Volunteer',
-  });
+    interestAreaId: DataTypes.INTEGER,
+    skillId: DataTypes.INTEGER
+  }, {});
+  Volunteer.associate = function(models) {
+    // associations can be defined here
+    Volunteer.hasMany(models.Skill, { as: 'skills', foreignKey: 'volunteerId' });
+    Volunteer.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'volunteerId' });
+    Volunteer.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'volunteerId' });
+  };
   return Volunteer;
 };
-
