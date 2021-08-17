@@ -83,10 +83,13 @@ module.exports = {
       pastworkDuration: {
         type: Sequelize.STRING
       },
-      pastwordAbout: {
+      pastworkAbout: {
         type: Sequelize.TEXT
       },
       pastworkBeneficiariesReached: {
+        type: Sequelize.INTEGER
+      },
+      pastworkNumberOfVolunteers: {
         type: Sequelize.INTEGER
       },
       createdAt: {

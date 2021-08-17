@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     beneficiaryDemographic: DataTypes.STRING,
     pastworkProjectName: DataTypes.STRING,
     pastworkStartDate: DataTypes.DATE,
-    pastwordEndDate: DataTypes.DATE,
-    pastwordDuration: DataTypes.STRING,
-    pastwordAbout: DataTypes.TEXT,
+    pastworkEndDate: DataTypes.DATE,
+    pastworkDuration: DataTypes.STRING,
+    pastworkAbout: DataTypes.TEXT,
     pastworkBeneficiariesReached: DataTypes.INTEGER,
     pastworkNumberOfVolunteers: DataTypes.INTEGER,
   }, {});

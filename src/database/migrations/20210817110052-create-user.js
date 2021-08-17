@@ -29,6 +29,18 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
+      country: {
+        type: Sequelize.STRING
+      },
+      state: {
+        type: Sequelize.STRING
+      },
+      city: {
+        type: Sequelize.STRING
+      },
+      address: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
