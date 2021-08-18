@@ -1,7 +1,4 @@
 'use strict';
-
-const { DataTypes } = require("sequelize/types");
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Volunteers', {
@@ -15,6 +12,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       lastname: {
+        type: Sequelize.STRING
+      },
+      middlename: {
         type: Sequelize.STRING
       },
       email: {
@@ -53,7 +53,7 @@ module.exports = {
         },
       },
       interestAreaId: { 
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'InterestAreas',
@@ -61,7 +61,7 @@ module.exports = {
         },
       },
       skillId: { 
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'Skills',
@@ -80,54 +80,54 @@ module.exports = {
       profession: {
         type: Sequelize.STRING,
       },
-    educationlevel: {
-      type: Sequelize.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD')
-    },
-    availability: {
-      type: Sequelize.ENUM('full-time', 'part-time'),
-    },
-    hoursOrWeek: {
-      type: Sequelize.INTEGER
-    },
-    daysofWeek: {
-      type: Sequelize.STRING
-    },
-    prevOrganisationName: {
-      type: Sequelize.STRING
-    },
-    prevProject: {
-      type: Sequelize.STRING
-    },
-    prevOrganisationRole: {
-      type: Sequelize.STRING
-    },
-    prevDesOfResponsibilities: {
-      type: Sequelize.TEXT
-    },
-    currentPosition: {
-      type: Sequelize.STRING
-    },
-    startDate: {
-      type: Sequelize.DATE
-    },
-    endDate: {
-      type: Sequelize.DATE
-    },
-    duration: {
-      type: Sequelize.INTEGER
-    },
-    website: {
-      type: Sequelize.STRING
-    },
-    linkedin: {
-      type: Sequelize.STRING
-    },
-    instagram: {
-      type: Sequelize.STRING
-    },
-    twitter: {
-      type: Sequelize.STRING
-    },
+      educationlevel: {
+        type: Sequelize.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD')
+      },
+      availability: {
+        type: Sequelize.ENUM('full-time', 'part-time'),
+      },
+      hoursOrWeek: {
+        type: Sequelize.INTEGER
+      },
+      daysofWeek: {
+        type: Sequelize.STRING
+      },
+      prevOrganisationName: {
+        type: Sequelize.STRING
+      },
+      prevProject: {
+        type: Sequelize.STRING
+      },
+      prevOrganisationRole: {
+        type: Sequelize.STRING
+      },
+      prevDesOfResponsibilities: {
+        type: Sequelize.TEXT
+      },
+      currentPosition: {
+        type: Sequelize.STRING
+      },
+      startDate: {
+        type: Sequelize.DATE
+      },
+      endDate: {
+        type: Sequelize.DATE
+      },
+      duration: {
+        type: Sequelize.INTEGER
+      },
+      website: {
+        type: Sequelize.STRING
+      },
+      linkedin: {
+        type: Sequelize.STRING
+      },
+      instagram: {
+        type: Sequelize.STRING
+      },
+      twitter: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

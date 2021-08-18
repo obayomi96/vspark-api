@@ -8,8 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      skillId: {
-        type: Sequelize.INTEGER
+      skillId: { 
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Skills',
+          key: 'id',
+        },
       },
       opportunityRole: {
         type: Sequelize.STRING
