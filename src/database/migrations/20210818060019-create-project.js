@@ -32,14 +32,29 @@ module.exports = {
       benenficiairiesDemographic: {
         type: Sequelize.ENUM('children', 'teen', 'adult-a', 'adult-b', 'adult-c', 'senoir-citizens', 'all-groups')
       },
-      skillId: {
-        type: Sequelize.INTEGER
-      },
-      interestAreaId: {
-        type: Sequelize.INTEGER
-      },
       sdgId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Sdgs',
+          key: 'id',
+        },
+      },
+      interestAreaId: { 
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'InterestAreas',
+          key: 'id',
+        },
+      },
+      skillId: { 
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Skills',
+          key: 'id',
+        },
       },
       projectRole: {
         type: Sequelize.STRING
