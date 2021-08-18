@@ -41,7 +41,7 @@ module.exports = {
         },
       },
       interestAreaId: { 
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'InterestAreas',
@@ -49,7 +49,7 @@ module.exports = {
         },
       },
       skillId: { 
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'Skills',

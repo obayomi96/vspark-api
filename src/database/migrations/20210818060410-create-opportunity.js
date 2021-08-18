@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       skillId: { 
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'Skills',
