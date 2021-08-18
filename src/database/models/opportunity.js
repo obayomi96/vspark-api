@@ -1,31 +1,18 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Opportunity extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  Opportunity.init({
+  const Opportunity = sequelize.define('Opportunity', {
     skillId: DataTypes.INTEGER,
     opportunityRole: DataTypes.STRING,
     description: DataTypes.TEXT,
-    modeOfEngagement: DataTypes.STRING,
-    typeOfPosition: DataTypes.STRING,
+    modeOfEngagement: DataTypes.ENUM('remote', 'in-person'),
+    typeOfPosition: DataTypes.ENUM('paid', 'volunteer'),
     nature: DataTypes.STRING,
-    minimumQualification: DataTypes.STRING,
-    applicationRoute: DataTypes.STRING,
+    minimumQualification: DataTypes.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD'),
+    applicationRoute: DataTypes.ENUM('volunteerspark', 'external-site'),
     applicationLink: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Opportunity',
-  });
+  }, {});
+  Opportunity.associate = function(models) {
+   
+  };
   return Opportunity;
 };

@@ -1,4 +1,7 @@
 'use strict';
+
+const { DataTypes } = require("sequelize/types");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Volunteers', {
@@ -42,14 +45,89 @@ module.exports = {
         type: Sequelize.TEXT
       },
       sdgId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Sdgs',
+          key: 'id',
+        },
       },
-      skillId: {
-        type: Sequelize.INTEGER
+      interestAreaId: { 
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'InterestAreas',
+          key: 'id',
+        },
       },
-      interestAreaId: {
-        type: Sequelize.INTEGER
+      skillId: { 
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Skills',
+          key: 'id',
+        },
       },
+      profilePhoto: {
+        type: Sequelize.STRING,
+      },
+      headerPhoto: {
+        type: Sequelize.STRING
+      },
+      bio: {
+        type: Sequelize.TEXT
+      },
+      profession: {
+        type: Sequelize.STRING,
+      },
+    educationlevel: {
+      type: Sequelize.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD')
+    },
+    availability: {
+      type: Sequelize.ENUM('full-time', 'part-time'),
+    },
+    hoursOrWeek: {
+      type: Sequelize.INTEGER
+    },
+    daysofWeek: {
+      type: Sequelize.STRING
+    },
+    prevOrganisationName: {
+      type: Sequelize.STRING
+    },
+    prevProject: {
+      type: Sequelize.STRING
+    },
+    prevOrganisationRole: {
+      type: Sequelize.STRING
+    },
+    prevDesOfResponsibilities: {
+      type: Sequelize.TEXT
+    },
+    currentPosition: {
+      type: Sequelize.STRING
+    },
+    startDate: {
+      type: Sequelize.DATE
+    },
+    endDate: {
+      type: Sequelize.DATE
+    },
+    duration: {
+      type: Sequelize.INTEGER
+    },
+    website: {
+      type: Sequelize.STRING
+    },
+    linkedin: {
+      type: Sequelize.STRING
+    },
+    instagram: {
+      type: Sequelize.STRING
+    },
+    twitter: {
+      type: Sequelize.STRING
+    },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

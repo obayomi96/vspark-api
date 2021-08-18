@@ -18,19 +18,19 @@ module.exports = {
         type: Sequelize.TEXT
       },
       modeOfEngagement: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('remote', 'in-person')
       },
       typeOfPosition: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('paid', 'volunteer')
       },
       nature: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('full-time', 'intern', 'part-time')
       },
       minimumQualification: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD')
       },
       applicationRoute: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('volunteerspark', 'external-site')
       },
       applicationLink: {
         type: Sequelize.STRING

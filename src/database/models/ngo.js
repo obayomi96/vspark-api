@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     about: DataTypes.TEXT,
     isVerified: DataTypes.BOOLEAN,
     password: DataTypes.STRING,
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('profit', 'non-profit'),
     industry: DataTypes.STRING,
     country: DataTypes.STRING,
     state: DataTypes.STRING,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     verificationDocument: DataTypes.STRING,
     nature: DataTypes.STRING,
     beneficiaries: DataTypes.INTEGER,
-    beneficiaryDemographic: DataTypes.STRING,
+    beneficiaryDemographic: DataTypes.ENUM('children', 'teen', 'adult-a', 'adult-b', 'adult-c', 'senoir-citizens', 'all-groups'),
     pastworkProjectName: DataTypes.STRING,
     pastworkStartDate: DataTypes.DATE,
     pastworkEndDate: DataTypes.DATE,
@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     pastworkAbout: DataTypes.TEXT,
     pastworkBeneficiariesReached: DataTypes.INTEGER,
     pastworkNumberOfVolunteers: DataTypes.INTEGER,
+    sdgId: DataTypes.INTEGER,
+    interestAreaId: DataTypes.INTEGER,
   }, {});
   Ngo.associate = function(models) {
    

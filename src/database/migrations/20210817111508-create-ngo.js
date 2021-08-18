@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       type: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('profit', 'non-profit'),
       },
       country: {
         type: Sequelize.STRING
@@ -69,7 +69,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       beneficiaryDemographic: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('children', 'teen', 'adult-a', 'adult-b', 'adult-c', 'senoir-citizens', 'all-groups'),
       },
       pastworkProjectName: {
         type: Sequelize.STRING
@@ -91,6 +91,22 @@ module.exports = {
       },
       pastworkNumberOfVolunteers: {
         type: Sequelize.INTEGER
+      },
+      sdgId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Sdgs',
+          key: 'id',
+        },
+      },
+      interestAreaId: { 
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'InterestAreas',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,

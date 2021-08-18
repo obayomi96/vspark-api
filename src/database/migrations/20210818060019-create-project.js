@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       type: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('project', 'event')
       },
       about: {
         type: Sequelize.TEXT
@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       benenficiairiesDemographic: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('children', 'teen', 'adult-a', 'adult-b', 'adult-c', 'senoir-citizens', 'all-groups')
       },
       skillId: {
         type: Sequelize.INTEGER
@@ -48,19 +48,19 @@ module.exports = {
         type: Sequelize.TEXT
       },
       modeOfEngagement: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('remote', 'in-person')
       },
       typeOfPosition: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('paid', 'volunteer')
       },
       nature: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('full-time', 'intern', 'part-time')
       },
       minimumQualification: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD')
       },
       applicationRoute: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('volunteerspark', 'external-site')
       },
       applicationLink: {
         type: Sequelize.STRING

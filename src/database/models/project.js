@@ -1,41 +1,29 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Project extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  Project.init({
-    type: DataTypes.STRING,
+  const Project = sequelize.define('Project', {
+    type: DataTypes.ENUM('project', 'event'),
     about: DataTypes.TEXT,
     location: DataTypes.STRING,
     startDate: DataTypes.DATE,
     endDate: DataTypes.DATE,
     duration: DataTypes.INTEGER,
     estNumBeneficiaries: DataTypes.INTEGER,
-    benenficiairiesDemographic: DataTypes.STRING,
+    benenficiairiesDemographic: DataTypes.ENUM('children', 'teen', 'adult-a', 'adult-b', 'adult-c', 'senoir-citizens', 'all-groups'),
     skillId: DataTypes.INTEGER,
     interestAreaId: DataTypes.INTEGER,
     sdgId: DataTypes.INTEGER,
     projectRole: DataTypes.STRING,
     description: DataTypes.TEXT,
-    modeOfEngagement: DataTypes.STRING,
-    typeOfPosition: DataTypes.STRING,
-    nature: DataTypes.STRING,
-    minimumQualification: DataTypes.STRING,
-    applicationRoute: DataTypes.STRING,
+    modeOfEngagement: DataTypes.ENUM('remote', 'in-person'),
+    typeOfPosition: DataTypes.ENUM('paid', 'volunteer'),
+    nature: DataTypes.ENUM('full-time', 'intern', 'part-time'),
+    minimumQualification: DataTypes.ENUM('primary', 'secondary', 'OND', 'HND', 'BSC', 'masters', 'PHD'),
+    applicationRoute: DataTypes.ENUM('volunteerspark', 'external-site'),
     applicationLink: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Project',
-  });
+  }, {});
+  Project.associate = function(models) {
+   
+  };
   return Project;
 };
+
