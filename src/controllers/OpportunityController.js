@@ -19,7 +19,7 @@ class OpportunityController {
    * @returns {Object} object containing user data and access Token
    * @memberof OpportunityController
    */
-  static async createProject(req, res) {
+  static async createOpportunity(req, res) {
     const body = req.body;
     const opportunity = await models.Opportunity.create({
       body,

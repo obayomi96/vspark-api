@@ -83,10 +83,38 @@ class Authenticate {
    * @return {Function} - next function call
    */
   static async isAdmin(req, res, next) {
-    const { role } = req.user;
-    if (role !== 'super_admin') return errorStat(res, 401, 'Authorization error, admin only!');
+    const { type } = req.user;
+    if (type !== 'admin') return errorStat(res, 401, 'Authorization error, admin only!');
     return next();
   }
+
+   /**
+   *
+   * @param {*} req - Request Obj
+   * @param {*} res - Response Obj
+   * @param {*} next - Next function call
+   * @returns {object} Json
+   * @return {Function} - next function call
+   */
+    static async isNgo(req, res, next) {
+      const { type } = req.user;
+      if (type !== 'profit' && type !== 'non-profit') return errorStat(res, 401, 'Authorization error, NGOs only!');
+      return next();
+    }
+
+      /**
+   *
+   * @param {*} req - Request Obj
+   * @param {*} res - Response Obj
+   * @param {*} next - Next function call
+   * @returns {object} Json
+   * @return {Function} - next function call
+   */
+       static async isVolunteer(req, res, next) {
+        const { type } = req.user;
+        if (type !== 'volunteer') return errorStat(res, 401, 'Authorization error, NGOs only!');
+        return next();
+      }
 }
 
 export default Authenticate;

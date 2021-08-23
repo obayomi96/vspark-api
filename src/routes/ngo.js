@@ -24,8 +24,6 @@ ngoRoute.post('/login', ngoLogin);
 ngoRoute.get('/:ngo_id', verifyToken, fetchProfile);
 // ngoRoute.get('/', verifyToken, fetchngos);
 ngoRoute.patch('/:ngo_id', verifyToken, updateProfile);
-ngoRoute.get('/confirm-email', verifyToken, confirmEmail);
-ngoRoute.patch('/password-reset/:id', verifyToken, resetPassword);
 // ngoRoute.post('/project', createProject);
 // ngoRoute.post('/opportunity', createOpportunities);
 
