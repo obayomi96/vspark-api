@@ -294,38 +294,6 @@ class UserController {
       return utils.successStat(res, 200, 'message', 'Success, Password Reset Successfully');
     }
 
-     /**
-   * @static
-   * @description Allows a admin to fetch all profiles
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Object} All users
-   * @memberof UserController
-   */
-  static async fetchUsers(req, res) {
-    const adminUser = req.user;
-    if (adminUser.role !== 'super_admin') {
-      return utils.errorStat(res, 403, 'Unauthorized, admin only!');
-    }
-    const users = await models.User.findAll();
-    return console.log('users', users)
-    if (!dataValues) return utils.errorStat(res, 401, 'Users not found');
-    const data = dataValues.map((user) => user)
-    console.log('USSS', user)
-    console.log('USdaaa', data)
-    return utils.successStat(res, 200, 'users', {
-      id: user.id,
-      email: users.email,
-      firstname: users.firstname, 
-      lastname: users.lastname, 
-      phonenumber: users.phonenumber,
-      country: users.country,
-      state: users.state,
-      city: users.city,
-      type: users.type,
-    });
-  }
-
     /**
   * @static
   * @description Allows a user to sign in with social accounts

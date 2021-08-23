@@ -21,11 +21,15 @@ const ngoRoute = express();
 
 ngoRoute.post('/register', ngoSignup);
 ngoRoute.post('/login', ngoLogin);
-ngoRoute.get('/:id', verifyToken, fetchProfile);
+ngoRoute.get('/:ngo_id', verifyToken, fetchProfile);
 // ngoRoute.get('/', verifyToken, fetchngos);
-ngoRoute.patch('/:id', verifyToken, updateProfile);
+ngoRoute.patch('/:ngo_id', verifyToken, updateProfile);
 ngoRoute.get('/confirm-email', verifyToken, confirmEmail);
 ngoRoute.patch('/password-reset/:id', verifyToken, resetPassword);
+// ngoRoute.post('/project', createProject);
+// ngoRoute.post('/opportunity', createOpportunities);
+
+
 // ngoRoute.get('/google', passport.authenticate('google', {
 //   scope:
 //   ['https://www.googleapis.com/auth/ngoinfo.profile', 'https://www.googleapis.com/auth/ngoinfo.email']
