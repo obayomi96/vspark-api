@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-// import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import debug from 'debug';
@@ -17,8 +17,8 @@ const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(morgan('dev'));
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

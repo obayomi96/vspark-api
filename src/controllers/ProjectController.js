@@ -2,8 +2,6 @@
 import sequelize from 'sequelize';
 import models from '../database/models';
 import utils from '../utils/response';
-import auth from '../utils/auth';
-import EmailService from '../services/EmailService';
 
 const { Op } = sequelize;
 
@@ -31,7 +29,7 @@ class ProjectController {
     console.log('pro', project)
 
     return utils.successStat(res, 200, 'project', {
-      ...project
+      project
     });
   }
 }

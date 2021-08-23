@@ -21,11 +21,8 @@ class NgoController {
    * @memberof NgoController
    */
   static async ngoSignup(req, res) {
-    const { email, password, type } = req.body.user;
+    const { email, password } = req.body;
 
-    if (type !== 'volunteer' && type !== 'ngo') {
-      return utils.errorStat(res, 409, 'Specify account type, do you want to register as a NGO or Volunteer');
-    }
     const existingUser = await models.Ngo.findOne({
       where: {
         [Op.or]: [{ email }],
@@ -34,8 +31,11 @@ class NgoController {
     if (existingUser) {
       return utils.errorStat(res, 409, 'NGO Already Exists');
     }
-    const newUser = { ...req.body.user, password: auth.hashPassword(password) };
+    const newUser = { ...req.body, password: auth.hashPassword(password) };
+    console.log('ne', newUser)
     const ngo = await models.Ngo.create(newUser);
+    console.log('neww', ngo)
+
     const token = auth.generateToken({ id: ngo.id, email: ngo.email });
 
     const message = {};
@@ -88,7 +88,6 @@ class NgoController {
         id: ngo.id,
         email: ngo.email,
       }),
-      phonenumber: ngo.phonenumber,
       email: ngo.email,
       name: ngo.name
     });
