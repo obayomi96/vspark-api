@@ -12,7 +12,7 @@ router.get('/', (req, res) =>
   })
 );
 
-router.use('/users', userRoute);
+router.use('/user', userRoute);
 router.use('/ngo', ngoRoute);
 router.use('/volunteer', volunteerRoute);
 

@@ -32,32 +32,31 @@ class NgoController {
       },
     });
     if (existingUser) {
-      return utils.errorStat(res, 409, 'User Already Exists');
+      return utils.errorStat(res, 409, 'NGO Already Exists');
     }
     const newUser = { ...req.body.user, password: auth.hashPassword(password) };
-    const user = await models.Ngo.create(newUser);
-    const token = auth.generateToken({ id: user.id, email: user.email });
+    const ngo = await models.Ngo.create(newUser);
+    const token = auth.generateToken({ id: ngo.id, email: ngo.email });
 
     const message = {};
-    const verifyLink = `${process.env.APP_URL}/api/v1/users/confirmEmail?token=${token}&id=${user.id}`
-    message.subject = 'WELCOME TO VOLUNTEERSPARK';
+    const verifyLink = `${process.env.APP_URL}/api/v1/ngo/confirmEmail?token=${token}&id=${ngo.id}`
+    message.subject = 'NEW ORGANISATION CREATED';
     message.html = `
       <p>Hello!</p>
-      <p>An account was just created for you as a ${type} on the Volunteerspark platform</p>
-      <p>We are so excited to have you and can't wait to get you connected with other organisations on out network.</p>
+      <p>A new organisation was just created for you  on the Volunteerspark platform</p>
       <p>Your password is <strong>${password}</strong>, you can update this password once you login</p>
-      <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
+      <p>kindly click the link below to verify your company email <p>${verifyLink}</p></p>
       <br />
       <strong>VolunteerSpark team</strong>
-    `; ;
+    `;
   
     // implement emasil service
     await EmailService.sendEmail(email, message)
 
-    return utils.successStat(res, 201, 'user', {
-      id: user.id,
+    return utils.successStat(res, 201, 'ngo', {
+      id: ngo.id,
       token,
-      email: user.email,
+      email: ngo.email,
     });
   }
 
@@ -71,29 +70,27 @@ class NgoController {
    */
   static async ngoLogin(req, res) {
     const { email, password } = req.body.user;
-    const user = await models.Ngo.findOne({ where: { email } });
+    const ngo = await models.Ngo.findOne({ where: { email } });
 
-    if (!user)
+    if (!ngo)
       return utils.errorStat(
         res,
         401,
-        'User not found, check your login details'
+        'Orgnaisation not found, check your login details'
       );
-    const matchPasswords = auth.comparePassword(password, user.password);
+    const matchPasswords = auth.comparePassword(password, ngo.password);
     if (!matchPasswords) {
       return utils.errorStat(res, 401, 'Incorrect Login information');
     }
-    return utils.successStat(res, 200, 'user', {
-      id: user.id,
+    return utils.successStat(res, 200, 'ngo', {
+      id: ngo.id,
       token: await auth.generateToken({
-        id: user.id,
-        email: user.email,
+        id: ngo.id,
+        email: ngo.email,
       }),
-      email: user.email,
-      firstname: user.firstname, 
-      lastname: user.lastname, 
-      phonenumber: user.phonenumber,
-      email: user.email,
+      phonenumber: ngo.phonenumber,
+      email: ngo.email,
+      name: ngo.name
     });
   }
 
@@ -115,12 +112,11 @@ class NgoController {
       if (!user) return utils.errorStat(res, 400, 'Unable to send verification email');
 
       const message = {};
-      const verifyLink = `${process.env.APP_URL}/api/v1/users/confirmEmail?token=${token}&id=${user.id}`
+      const verifyLink = `${process.env.APP_URL}/api/v1/ngo/confirmEmail?token=${token}&id=${user.id}`
       message.subject = 'EMAIL CONFIRMATION';
       message.html = `
         <p>Hello!</p>
-        <p>You have an account as a ${type} on the Volunteerspark platform</p>
-        <p>We are so excited to have you and can't wait to get you connected with other organisations on out network.</p>
+        <p>You have an ngo account on the Volunteerspark platform</p>
         <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
         <br />
         <strong>VolunteerSpark team</strong>
@@ -164,16 +160,16 @@ class NgoController {
    * @memberof NgoController
    */
   static async fetchProfile(req, res) {
-    const { user_id } = req.params;
+    const { ngo_id } = req.params;
     const { id } = req.user;
-    if (!user_id) {
-      return utils.errorStat(res, 400, 'user_id is required');
+    if (!ngo_id) {
+      return utils.errorStat(res, 400, 'ngo_id is required');
     }
-    if (parseInt(user_id, 10) !== id) {
+    if (parseInt(ngo_id, 10) !== id) {
       return utils.errorStat(res, 403, 'Unauthorized');
     }
     const profile = await models.Ngo.findOne({
-      where: { id: user_id },
+      where: { id: ngo_id },
     });
     if (!profile) return utils.errorStat(res, 401, 'Profile not found');
     return utils.successStat(res, 200, 'profile', profile);
@@ -187,17 +183,17 @@ class NgoController {
    * @memberof NgoController
    */
   static async updateProfile(req, res) {
-    const { firstname, lastname, phonenumner, email, country, state, city } = req.body;
+    const { name, about, password, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId } = req.body;
     const { id } = req.user;
-    const { user_id } = req.params;
+    const { ngo_id } = req.params;
 
-    if (parseInt(user_id, 10) !== id) {
+    if (parseInt(ngo_id, 10) !== id) {
       return utils.errorStat(res, 403, 'Unauthorized');
     }
 
     const user = await models.Ngo.findOne({
       where: {
-        [Op.and]: [{ id: parseInt(user_id, 10) }, { id }],
+        [Op.and]: [{ id: parseInt(ngo_id, 10) }, { id }],
       },
     });
 
@@ -210,56 +206,23 @@ class NgoController {
     }
 
     await models.Ngo.update(
-      { email, firstname, lastname, phonenumner, country, state, city },
+      { name, about, password, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId},
       {
         returning: true,
         where: {
-          [Op.and]: [{ id: parseInt(user_id, 10) }, { id }],
+          [Op.and]: [{ id: parseInt(ngo_id, 10) }, { id }],
         },
       }
     );
 
     const updateResponse = await models.Ngo.findOne({
       where: {
-        [Op.and]: [{ id }, { id: user_id }],
+        [Op.and]: [{ id }, { id: ngo_id }],
       },
     });
 
-    return utils.successStat(res, 200, 'profile', {
-      firstname: updateResponse.firstname, 
-      lastname: updateResponse.lastname, 
-      email: updateResponse.email,
-      phonenumber: updateResponse.phonenumber,
-      country: updateResponse.country,
-      state: updateResponse.state,
-      city: updateResponse.city,
-      type: updateResponse.type,
-    });
+    return utils.successStat(res, 200, 'profile', updateResponse);
   }
-
-    /**
-    * @static
-    * @description Updates the user password in the database
-    * @param {Object} req - Request object
-    * @param {Object} res - Response object
-    * @returns {Object} Object containing either a success or error message.
-    * @memberof NgoController
-    */
-     static async resetPassword(req, res) {
-      const { oldPassword, newPassword } = req.body;
-      const { user_id } = req.params;
-      const { id } = req.user;
-      const user = await models.Ngo.findOne({ where: { id: user_id } });
-      if (!user) return utils.errorStat(res, 404, 'No user found');
-      if (parseInt(user_id, 10) !== id) {
-        return utils.errorStat(res, 403, 'Unauthorized');
-      }
-      const comparedPassword = auth.comparePassword(oldPassword, user.password)
-      if (!comparedPassword) return utils.errorStat(res, 404, 'Old password incorrect');
-      const hashedPassword = auth.hashPassword(newPassword);
-      await models.Ngo.update({ password: hashedPassword }, { where: { id: user.id } });
-      return utils.successStat(res, 200, 'message', 'Success, Password Reset Successfully');
-    }
 
     /**
   * @static
@@ -272,15 +235,13 @@ class NgoController {
   */
   static async socialSignin(req, res) {
     const userDetails = req.user;
-    const firstname = userDetails.displayName.split(' ')[0];
-    const lastname = userDetails.displayName.split(' ')[1];
+    const name = userDetails.displayName.split(' ')[0];
     const email = userDetails.emails[0].value;
 
     const newUser = await models.Ngo.findOrCreate({
       where: { email },
       defaults: {
-        firstname,
-        lastname,
+        name,
         email,
         password: 'null',
         isVerified: true,
@@ -292,9 +253,10 @@ class NgoController {
     });
 
     return res.redirect(`${process.env.FRONT_END_URL}?token=${token}&user=${JSON.stringify({
-      firstname, lastname, email, isVerified
+      name, email, isVerified
     })}`);
   }
+
 }
 
 export default NgoController;
