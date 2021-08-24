@@ -77,7 +77,6 @@ class Authenticate {
     return next();
   }
 
-  
   /**
    * @static
    * @description Authenticate the routes

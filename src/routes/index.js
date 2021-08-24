@@ -4,6 +4,8 @@ import ngoRoute from './ngo';
 import volunteerRoute from './volunteer';
 import projectRoute from './project';
 import opportunityRoute from './opportunity';
+import sdgRoute from './sdg';
+import skillRoute from './skill';
 
 const router = express();
 
@@ -19,5 +21,7 @@ router.use('/ngo', ngoRoute);
 router.use('/volunteer', volunteerRoute);
 router.use('/project', projectRoute);
 router.use('/opportunity', opportunityRoute);
+router.use('/sdg', sdgRoute);
+router.use('/skill', skillRoute);
 
 export default router;
