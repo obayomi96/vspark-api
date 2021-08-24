@@ -20,18 +20,73 @@ class ProjectController {
    * @memberof ProjectController
    */
   static async createProject(req, res) {
-    const body = req.body;
     const project = await models.Project.create({
-      body,
+      ...req.body,
       userId: req.user.id,
     });
 
-    console.log('pro', project)
-
-    return utils.successStat(res, 200, 'project', {
-      project
-    });
+    return utils.successStat(res, 200, 'project', project);
   }
+
+   /**
+   * @static
+   * @description Allows a user to fetch own profile
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @returns {Object} Single user profile
+   * @memberof ProjectController
+   */
+    static async fetchProject(req, res) {
+      const { project_id } = req.params;
+      if (!project_id) {
+        return utils.errorStat(res, 400, 'project_id is required');
+      }
+      const project = await models.Project.findOne({
+        where: { id: parseInt(project_id, 10) },
+      });
+      if (!project) return utils.errorStat(res, 401, 'project not found');
+      return utils.successStat(res, 200, 'project', project);
+    }
+
+      /**
+   * @description updates a user profile
+   * @param {Object} req - request object
+   * @param {Object} res - response object
+   * @returns {Object} returns updated user profile
+   * @memberof VolunteerController
+   */
+  static async updateProject(req, res) {
+    const { project_id } = req.params;
+
+    const project = await models.Project.findOne({
+      where: {
+        [Op.and]: [{ id: parseInt(project_id, 10) }],
+      },
+    });
+
+    if (!project) {
+      return utils.errorStat(res, 404, 'project not found.');
+    }
+
+    if (project.isVerified === false) {
+      return utils.errorStat(res, 404, 'You need to verify your email first');
+    }
+
+    await models.Project.update(
+      req.body,
+      {
+        returning: true,
+        where: { id: parseInt(project_id, 10) }
+      }
+    );
+
+    const updateResponse = await models.Project.findOne({
+      where: { id: parseInt(project_id, 10) }
+    });
+
+    return utils.successStat(res, 200, 'project', updateResponse);
+  }
+  
 }
 
 export default ProjectController;

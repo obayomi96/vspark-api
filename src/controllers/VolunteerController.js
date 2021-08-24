@@ -181,7 +181,6 @@ class VolunteerController {
    * @memberof VolunteerController
    */
   static async updateProfile(req, res) {
-    const { firstname, lastname, phonenumner, email, country, state, city } = req.body;
     const { id } = req.user;
     const { volunteer_id } = req.params;
 
