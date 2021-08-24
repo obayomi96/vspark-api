@@ -14,17 +14,18 @@ const {
 
 const {
   verifyToken,
-  isAdmin
+  isAdmin,
+  verifyVolunteer
 } = middlewares;
 
 const volunteerRoute = express();
 
 volunteerRoute.post('/register', volunteerSignup);
 volunteerRoute.post('/login', volunteerLogin);
-volunteerRoute.get('/:id', verifyToken, fetchProfile);
-volunteerRoute.patch('/:id', verifyToken, updateProfile);
-volunteerRoute.get('/confirm-email', verifyToken, confirmEmail);
-volunteerRoute.patch('/password-reset/:id', verifyToken, resetPassword);
+volunteerRoute.get('/:volunteer_id', verifyVolunteer, fetchProfile);
+volunteerRoute.patch('/:volunteer_id', verifyVolunteer, updateProfile);
+volunteerRoute.get('/confirm-email', verifyVolunteer, confirmEmail);
+volunteerRoute.patch('/password-reset/:volunteer_id', verifyVolunteer, resetPassword);
 // volunteerRoute.get('/google', passport.authenticate('google', {
 //   scope:
 //   ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']

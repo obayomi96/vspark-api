@@ -22,7 +22,6 @@ class NgoController {
    */
   static async ngoSignup(req, res) {
     const { email, password } = req.body;
-
     const existingUser = await models.Ngo.findOne({
       where: {
         [Op.or]: [{ email }],
@@ -32,7 +31,6 @@ class NgoController {
       return utils.errorStat(res, 409, 'NGO Already Exists');
     }
     const newUser = { ...req.body, password: auth.hashPassword(password) };
-    console.log('ne', newUser)
     const ngo = await models.Ngo.create(newUser);
     console.log('neww', ngo)
 
@@ -69,7 +67,7 @@ class NgoController {
    * @memberof NgoController
    */
   static async ngoLogin(req, res) {
-    const { email, password } = req.body.user;
+    const { email, password } = req.body;
     const ngo = await models.Ngo.findOne({ where: { email } });
 
     if (!ngo)
@@ -160,6 +158,7 @@ class NgoController {
    */
   static async fetchProfile(req, res) {
     const { ngo_id } = req.params;
+    // return console.log('lll', req.user)
     const { id } = req.user;
     if (!ngo_id) {
       return utils.errorStat(res, 400, 'ngo_id is required');
@@ -182,7 +181,8 @@ class NgoController {
    * @memberof NgoController
    */
   static async updateProfile(req, res) {
-    const { name, about, password, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId } = req.body;
+    const { name, about, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId } = req.body;
+    // return console.log('lll', req)
     const { id } = req.user;
     const { ngo_id } = req.params;
 
@@ -205,7 +205,7 @@ class NgoController {
     }
 
     await models.Ngo.update(
-      { name, about, password, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId},
+      { name, about, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId},
       {
         returning: true,
         where: {
@@ -222,6 +222,30 @@ class NgoController {
 
     return utils.successStat(res, 200, 'profile', updateResponse);
   }
+
+    /**
+    * @static
+    * @description Updates the user password in the database
+    * @param {Object} req - Request object
+    * @param {Object} res - Response object
+    * @returns {Object} Object containing either a success or error message.
+    * @memberof VolunteerController
+    */
+     static async resetPassword(req, res) {
+      const { oldPassword, newPassword } = req.body;
+      const { ngo_id } = req.params;
+      const { id } = req.user;
+      const user = await models.Ngo.findOne({ where: { id: ngo_id } });
+      if (!user) return utils.errorStat(res, 404, 'No user found');
+      if (parseInt(ngo_id, 10) !== id) {
+        return utils.errorStat(res, 403, 'Unauthorized');
+      }
+      const comparedPassword = auth.comparePassword(oldPassword, user.password)
+      if (!comparedPassword) return utils.errorStat(res, 404, 'Old password incorrect');
+      const hashedPassword = auth.hashPassword(newPassword);
+      await models.Ngo.update({ password: hashedPassword }, { where: { id: user.id } });
+      return utils.successStat(res, 200, 'message', 'Success, Password Reset Successfully');
+    }
 
     /**
   * @static

@@ -21,11 +21,7 @@ class VolunteerController {
    * @memberof VolunteerController
    */
   static async volunteerSignup(req, res) {
-    const { email, password, type } = req.body.user;
-
-    if (type !== 'volunteer' && type !== 'ngo') {
-      return utils.errorStat(res, 409, 'Specify account type, do you want to register as a NGO or Volunteer');
-    }
+    const { email, password } = req.body;
     const existingUser = await models.Volunteer.findOne({
       where: {
         [Op.or]: [{ email }],
@@ -34,7 +30,7 @@ class VolunteerController {
     if (existingUser) {
       return utils.errorStat(res, 409, 'User Already Exists');
     }
-    const newUser = { ...req.body.user, password: auth.hashPassword(password) };
+    const newUser = { ...req.body, password: auth.hashPassword(password) };
     const user = await models.Volunteer.create(newUser);
     const token = auth.generateToken({ id: user.id, email: user.email });
 
@@ -43,7 +39,7 @@ class VolunteerController {
     message.subject = 'WELCOME TO VOLUNTEERSPARK';
     message.html = `
       <p>Hello!</p>
-      <p>An account was just created for you as a ${type} on the Volunteerspark platform</p>
+      <p>An account was just created for you as a Volunteer on the Volunteerspark platform</p>
       <p>We are so excited to have you and can't wait to get you connected with other organisations on out network.</p>
       <p>Your password is <strong>${password}</strong>, you can update this password once you login</p>
       <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
@@ -70,7 +66,7 @@ class VolunteerController {
    * @memberof VolunteerController
    */
   static async volunteerLogin(req, res) {
-    const { email, password } = req.body.user;
+    const { email, password } = req.body;
     const user = await models.Volunteer.findOne({ where: { email } });
 
     if (!user)
@@ -90,10 +86,8 @@ class VolunteerController {
         email: user.email,
       }),
       email: user.email,
-      firstname: user.firstname, 
-      lastname: user.lastname, 
-      phonenumber: user.phonenumber,
-      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
     });
   }
 
@@ -164,16 +158,16 @@ class VolunteerController {
    * @memberof VolunteerController
    */
   static async fetchProfile(req, res) {
-    const { user_id } = req.params;
+    const { volunteer_id } = req.params;
     const { id } = req.user;
-    if (!user_id) {
-      return utils.errorStat(res, 400, 'user_id is required');
+    if (!volunteer_id) {
+      return utils.errorStat(res, 400, 'volunteer_id is required');
     }
-    if (parseInt(user_id, 10) !== id) {
+    if (parseInt(volunteer_id, 10) !== id) {
       return utils.errorStat(res, 403, 'Unauthorized');
     }
     const profile = await models.Volunteer.findOne({
-      where: { id: user_id },
+      where: { id: volunteer_id },
     });
     if (!profile) return utils.errorStat(res, 401, 'Profile not found');
     return utils.successStat(res, 200, 'profile', profile);
@@ -187,17 +181,16 @@ class VolunteerController {
    * @memberof VolunteerController
    */
   static async updateProfile(req, res) {
-    const { firstname, lastname, phonenumner, email, country, state, city } = req.body;
     const { id } = req.user;
-    const { user_id } = req.params;
+    const { volunteer_id } = req.params;
 
-    if (parseInt(user_id, 10) !== id) {
+    if (parseInt(volunteer_id, 10) !== id) {
       return utils.errorStat(res, 403, 'Unauthorized');
     }
 
     const user = await models.Volunteer.findOne({
       where: {
-        [Op.and]: [{ id: parseInt(user_id, 10) }, { id }],
+        [Op.and]: [{ id: parseInt(volunteer_id, 10) }, { id }],
       },
     });
 
@@ -210,31 +203,22 @@ class VolunteerController {
     }
 
     await models.Volunteer.update(
-      { email, firstname, lastname, phonenumner, country, state, city },
+      ...req.body,
       {
         returning: true,
         where: {
-          [Op.and]: [{ id: parseInt(user_id, 10) }, { id }],
+          [Op.and]: [{ id: parseInt(volunteer_id, 10) }, { id }],
         },
       }
     );
 
     const updateResponse = await models.Volunteer.findOne({
       where: {
-        [Op.and]: [{ id }, { id: user_id }],
+        [Op.and]: [{ id }, { id: volunteer_id }],
       },
     });
 
-    return utils.successStat(res, 200, 'profile', {
-      firstname: updateResponse.firstname, 
-      lastname: updateResponse.lastname, 
-      email: updateResponse.email,
-      phonenumber: updateResponse.phonenumber,
-      country: updateResponse.country,
-      state: updateResponse.state,
-      city: updateResponse.city,
-      type: updateResponse.type,
-    });
+    return utils.successStat(res, 200, 'profile', updateResponse);
   }
 
     /**
@@ -247,11 +231,11 @@ class VolunteerController {
     */
      static async resetPassword(req, res) {
       const { oldPassword, newPassword } = req.body;
-      const { user_id } = req.params;
+      const { volunteer_id } = req.params;
       const { id } = req.user;
-      const user = await models.Volunteer.findOne({ where: { id: user_id } });
+      const user = await models.Volunteer.findOne({ where: { id: volunteer_id } });
       if (!user) return utils.errorStat(res, 404, 'No user found');
-      if (parseInt(user_id, 10) !== id) {
+      if (parseInt(volunteer_id, 10) !== id) {
         return utils.errorStat(res, 403, 'Unauthorized');
       }
       const comparedPassword = auth.comparePassword(oldPassword, user.password)

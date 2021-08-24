@@ -45,6 +45,75 @@ class Authenticate {
 
   /**
    * @static
+   * @description Authenticate the routes
+   * @param {object} req - Request object
+   * @param {object} res - Response object
+   * @param {Object} next - Next function call
+   * @returns {object} Json
+   * @memberof Authenticate
+   */
+   static async verifyNgo(req, res, next) {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) return errorStat(res, 401, 'Authorization error');
+    const token =
+      req.headers.authorization.split(' ')[1] || authorizationHeader;
+    let verifiedUser;
+    try {
+      verifiedUser = await auth.verifyUserToken(token, async (err, decoded) => {
+        if (err) {
+          throw new Error();
+        }
+        return decoded;
+      });
+    } catch (err) {
+      return errorStat(res, 401, 'invalid token');
+    }
+    const { id } = verifiedUser;
+    const user = await models.Ngo.findByPk(id);
+    if (!user) {
+      return errorStat(res, 404, 'user not found');
+    }
+    req.user = user;
+    return next();
+  }
+
+  
+  /**
+   * @static
+   * @description Authenticate the routes
+   * @param {object} req - Request object
+   * @param {object} res - Response object
+   * @param {Object} next - Next function call
+   * @returns {object} Json
+   * @memberof Authenticate
+   */
+   static async verifyVolunteer(req, res, next) {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) return errorStat(res, 401, 'Authorization error');
+    const token =
+      req.headers.authorization.split(' ')[1] || authorizationHeader;
+    let verifiedUser;
+    try {
+      verifiedUser = await auth.verifyUserToken(token, async (err, decoded) => {
+        if (err) {
+          throw new Error();
+        }
+        return decoded;
+      });
+    } catch (err) {
+      return errorStat(res, 401, 'invalid token');
+    }
+    const { id } = verifiedUser;
+    const user = await models.Volunteer.findByPk(id);
+    if (!user) {
+      return errorStat(res, 404, 'user not found');
+    }
+    req.user = user;
+    return next();
+  }
+
+  /**
+   * @static
    * @description Gets user details if the user is logged in. But returns next with
    * no details if the user is not logged in
    * @param {object} req - Request object

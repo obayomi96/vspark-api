@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     Volunteer.hasMany(models.Skill, { as: 'skills', foreignKey: 'volunteerId' });
     Volunteer.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'volunteerId' });
     Volunteer.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'volunteerId' });
+    Volunteer.belongsTo(models.Opportunity, { as: 'opportunity', foreignKey: 'volunteerId' });
   };
   return Volunteer;
 };
