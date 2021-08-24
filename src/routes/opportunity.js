@@ -3,17 +3,19 @@ import OpportunityController from '../controllers/OpportunityController';
 import middlewares from '../middlewares';
 
 const {
- createOpportunity
+ createOpportunity,
+ fetchOpportunity,
+ updateOpportunity
 } = OpportunityController;
 
 const {
-  isNgo,
+  verifyNgo,
 } = middlewares;
 
 const opportunityRoute = express();
 
-opportunityRoute.post('/', isNgo, createOpportunity);
-// opportunityRoute.get('/:opportunity_id', isNgo, fetchOpportunity);
-// opportunityRoute.patch('/:opportunity_id', isNgo, updateOpportunity);
+opportunityRoute.post('/', verifyNgo, createOpportunity);
+opportunityRoute.get('/:opportunity_id', verifyNgo, fetchOpportunity);
+opportunityRoute.patch('/:opportunity_id', verifyNgo, updateOpportunity);
 
 export default opportunityRoute;

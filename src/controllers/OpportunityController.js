@@ -20,18 +20,71 @@ class OpportunityController {
    * @memberof OpportunityController
    */
   static async createOpportunity(req, res) {
-    const body = req.body;
     const opportunity = await models.Opportunity.create({
-      body,
+      ...req.body,
       userId: req.user.id,
     });
-
-    console.log('pro', opportunity)
-
-    return utils.successStat(res, 200, 'opportunity', {
-      ...opportunity
-    });
+    return utils.successStat(res, 200, 'opportunity', opportunity);
   }
+
+  /**
+   * @static
+   * @description Allows a user to fetch own profile
+   * @param {Object} req - Request object
+   * @param {Object} res - Response object
+   * @returns {Object} Single user profile
+   * @memberof ProjectController
+   */
+   static async fetchOpportunity(req, res) {
+    const { opportunity_id } = req.params;
+    if (!opportunity_id) {
+      return utils.errorStat(res, 400, 'opportunity_id is required');
+    }
+    const opportunity = await models.Opportunity.findOne({
+      where: { id: parseInt(opportunity_id, 10) },
+    });
+    if (!opportunity) return utils.errorStat(res, 401, 'opportunity not found');
+    return utils.successStat(res, 200, 'opportunity', opportunity);
+  }
+
+    /**
+ * @description updates a user profile
+ * @param {Object} req - request object
+ * @param {Object} res - response object
+ * @returns {Object} returns updated user profile
+ * @memberof OpportunityController
+ */
+static async updateOpportunity(req, res) {
+  const { opportunity_id } = req.params;
+
+  const opportunity = await models.Opportunity.findOne({
+    where: {
+      [Op.and]: [{ id: parseInt(opportunity_id, 10) }],
+    },
+  });
+
+  if (!opportunity) {
+    return utils.errorStat(res, 404, 'opportunity not found.');
+  }
+
+  if (opportunity.isVerified === false) {
+    return utils.errorStat(res, 404, 'You need to verify your email first');
+  }
+
+  await models.Opportunity.update(
+    req.body,
+    {
+      returning: true,
+      where: { id: parseInt(opportunity_id, 10) }
+    }
+  );
+
+  const updateResponse = await models.Opportunity.findOne({
+    where: { id: parseInt(opportunity_id, 10) }
+  });
+
+  return utils.successStat(res, 200, 'opportunity', updateResponse);
+}
 }
 
 export default OpportunityController;
