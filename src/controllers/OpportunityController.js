@@ -54,37 +54,89 @@ class OpportunityController {
  * @returns {Object} returns updated user profile
  * @memberof OpportunityController
  */
-static async updateOpportunity(req, res) {
-  const { opportunity_id } = req.params;
+  static async updateOpportunity(req, res) {
+    const { opportunity_id } = req.params;
 
-  const opportunity = await models.Opportunity.findOne({
-    where: {
-      [Op.and]: [{ id: parseInt(opportunity_id, 10) }],
-    },
-  });
+    const opportunity = await models.Opportunity.findOne({
+      where: {
+        [Op.and]: [{ id: parseInt(opportunity_id, 10) }],
+      },
+    });
 
-  if (!opportunity) {
-    return utils.errorStat(res, 404, 'opportunity not found.');
-  }
-
-  if (opportunity.isVerified === false) {
-    return utils.errorStat(res, 404, 'You need to verify your email first');
-  }
-
-  await models.Opportunity.update(
-    req.body,
-    {
-      returning: true,
-      where: { id: parseInt(opportunity_id, 10) }
+    if (!opportunity) {
+      return utils.errorStat(res, 404, 'opportunity not found.');
     }
-  );
 
-  const updateResponse = await models.Opportunity.findOne({
-    where: { id: parseInt(opportunity_id, 10) }
-  });
+    if (opportunity.isVerified === false) {
+      return utils.errorStat(res, 404, 'You need to verify your email first');
+    }
 
-  return utils.successStat(res, 200, 'opportunity', updateResponse);
-}
+    await models.Opportunity.update(
+      req.body,
+      {
+        returning: true,
+        where: { id: parseInt(opportunity_id, 10) }
+      }
+    );
+
+    const updateResponse = await models.Opportunity.findOne({
+      where: { id: parseInt(opportunity_id, 10) }
+    });
+
+    return utils.successStat(res, 200, 'opportunity', updateResponse);
+  }
+
+  static async applyForOpportunity(req, res) {
+    const { opportunity_id } = req.params;
+
+    const opportunity = await models.Opportunity.findOne({
+      where: {
+        [Op.and]: [{ id: parseInt(opportunity_id, 10) }],
+      },
+    });
+
+    if (!opportunity) {
+      return utils.errorStat(res, 404, 'opportunity not found.');
+    }
+
+    await models.Opportunity.update(
+      {volunteerId: req.user.id},
+      {
+        returning: true,
+        where: { id: parseInt(opportunity_id, 10) }
+      }
+    );
+
+    const updateResponse = await models.Opportunity.findOne({
+      where: { id: parseInt(opportunity_id, 10) }
+    });
+
+    return utils.successStat(res, 200, 'opportunity', updateResponse);
+  }
+
+    /**
+   * @description Allows user get opportunitiess
+   * @param {Object} req - request object
+   * @param {Object} res - response object
+   * @returns {Object} returns Comments
+   * @memberof VolunteerController
+   */
+     static async fetchOpportunities(req, res) {
+      const opportunities = await models.Opportunity.findAll({
+        include: [
+          {
+            as: 'volunteers',
+            model: models.Volunteer,
+            attributes: ['id', 'firstname', 'lastname', 'email'],
+          },
+        ],
+      });
+      if (!opportunities) {
+        return utils.errorStat(res, 404, 'No opportunities found');
+      }
+      return utils.successStat(res, 200, 'opportunities', opportunities);
+    }
+  
 }
 
 export default OpportunityController;
