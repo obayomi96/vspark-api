@@ -1,5 +1,5 @@
 import authenticate from './authenticate';
 
-const { verifyToken, isAdmin, isNgo, isVerified, isVolunteer } = authenticate;
+const { verifyToken, isAdmin, isNgo, isVerified, isVolunteer, verifyNgo, verifyVolunteer } = authenticate;
 
-export default { verifyToken, isAdmin, isNgo, isVerified, isVolunteer };
+export default { verifyToken, isAdmin, isNgo, isVerified, isVolunteer, verifyNgo, verifyVolunteer };

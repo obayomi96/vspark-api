@@ -32,7 +32,6 @@ class NgoController {
       return utils.errorStat(res, 409, 'NGO Already Exists');
     }
     const newUser = { ...req.body, password: auth.hashPassword(password) };
-    console.log('ne', newUser)
     const ngo = await models.Ngo.create(newUser);
     console.log('neww', ngo)
 
@@ -69,7 +68,7 @@ class NgoController {
    * @memberof NgoController
    */
   static async ngoLogin(req, res) {
-    const { email, password } = req.body.user;
+    const { email, password } = req.body;
     const ngo = await models.Ngo.findOne({ where: { email } });
 
     if (!ngo)
@@ -160,6 +159,7 @@ class NgoController {
    */
   static async fetchProfile(req, res) {
     const { ngo_id } = req.params;
+    // return console.log('lll', req.user)
     const { id } = req.user;
     if (!ngo_id) {
       return utils.errorStat(res, 400, 'ngo_id is required');
@@ -183,6 +183,7 @@ class NgoController {
    */
   static async updateProfile(req, res) {
     const { name, about, password, phonenumner, type, industry, state, city, country, address, website, email, linkedin, instagram, twitter,verificationDocument,beneficiaries,beneficiaryDemographic,pastworkProjectName ,pastworkStartDate,pastworkEndDate,pastworkDuration,pastworkAbout,pastworkBeneficiariesReached,pastworkNumberOfVolunteers,sdgId,interestAreaId } = req.body;
+    // return console.log('lll', req)
     const { id } = req.user;
     const { ngo_id } = req.params;
 

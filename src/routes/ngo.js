@@ -14,16 +14,17 @@ const {
 
 const {
   verifyToken,
-  isAdmin
+  isAdmin,
+  isNgo,
+  verifyNgo,
 } = middlewares;
 
 const ngoRoute = express();
 
 ngoRoute.post('/register', ngoSignup);
 ngoRoute.post('/login', ngoLogin);
-ngoRoute.get('/:ngo_id', verifyToken, fetchProfile);
-// ngoRoute.get('/', verifyToken, fetchngos);
-ngoRoute.patch('/:ngo_id', verifyToken, updateProfile);
+ngoRoute.get('/:ngo_id',verifyNgo, fetchProfile);
+ngoRoute.patch('/:ngo_id', verifyNgo, updateProfile);
 // ngoRoute.post('/project', createProject);
 // ngoRoute.post('/opportunity', createOpportunities);
 
