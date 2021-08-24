@@ -40,6 +40,22 @@ module.exports = {
       applicationLink: {
         type: Sequelize.STRING
       },
+      volunteerId: { 
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Opportunities',
+          key: 'id',
+        },
+      },
+      projectId: { 
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Projects',
+          key: 'id',
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
