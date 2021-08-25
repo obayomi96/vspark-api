@@ -5,7 +5,8 @@ import middlewares from '../middlewares';
 const {
  createProject,
  fetchProject,
- updateProject
+ updateProject,
+ fetchProjects
 } = ProjectController;
 
 const {
@@ -15,7 +16,8 @@ const {
 const projectRoute = express();
 
 projectRoute.post('/', verifyNgo, createProject);
-projectRoute.get('/:project_id', verifyNgo, fetchProject);
+projectRoute.get('/', fetchProjects);
+projectRoute.get('/:project_id', fetchProject);
 projectRoute.patch('/:project_id', verifyNgo, updateProject);
 
 export default projectRoute;

@@ -247,29 +247,6 @@ class NgoController {
       return utils.successStat(res, 200, 'message', 'Success, Password Reset Successfully');
     }
 
-  /**
-   * @description Allows user get opportunitiess
-   * @param {Object} req - request object
-   * @param {Object} res - response object
-   * @returns {Object} returns Comments
-   * @memberof VolunteerController
-   */
-    static async fetchOpportunities(req, res) {
-    const opportunities = await models.Opportunity.findAll({
-      include: [
-        {
-          as: 'volunteer',
-          model: models.Volunteer,
-          attributes: ['id', 'firstname', 'lastname', 'email'],
-        },
-      ],
-    });
-    if (!opportunities) {
-      return utils.errorStat(res, 404, 'No opportunities found');
-    }
-    return utils.successStat(res, 200, 'opportunities', opportunities);
-  }
-
     /**
   * @static
   * @description Allows a user to sign in with social accounts

@@ -18,7 +18,7 @@ class SdgController {
   static async createSdg(req, res) {
     const sdg = await models.Sdg.create({
       ...req.body,
-      userId: req.user.id,
+      // userId: req.user.id,
     });
     return utils.successStat(res, 200, 'sdg', sdg);
   }

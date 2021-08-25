@@ -9,7 +9,6 @@ const {
   fetchProfile,
   confirmEmail,
   resetPassword,
-  fetchOpportunities
   // socialSignin
 } = VolunteerController;
 
@@ -27,7 +26,6 @@ volunteerRoute.get('/:volunteer_id', verifyVolunteer, fetchProfile);
 volunteerRoute.patch('/:volunteer_id', verifyVolunteer, updateProfile);
 volunteerRoute.get('/confirm-email', verifyVolunteer, confirmEmail);
 volunteerRoute.patch('/password-reset/:volunteer_id', verifyVolunteer, resetPassword);
-volunteerRoute.get('/opportunities', fetchOpportunities);
 // volunteerRoute.get('/google', passport.authenticate('google', {
 //   scope:
 //   ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']

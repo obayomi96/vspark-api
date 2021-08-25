@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     applicationLink: DataTypes.STRING
   }, {});
   Project.associate = function(models) {
-    Project.hasMany(models.Skill, { as: 'skills', foreignKey: 'ProjectId' });
-    Project.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'ProjectId' });
-    Project.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'ProjectId' });
+    Project.hasMany(models.Skill, { as: 'skills', foreignKey: 'projectId' });
+    Project.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'projectId' });
+    Project.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'projectId' });
   };
   return Project;
 };
