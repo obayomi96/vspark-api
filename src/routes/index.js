@@ -6,6 +6,7 @@ import projectRoute from './project';
 import opportunityRoute from './opportunity';
 import sdgRoute from './sdg';
 import skillRoute from './skill';
+import interestAreaRoute from './interestArea'
 
 const router = express();
 
@@ -23,5 +24,6 @@ router.use('/project', projectRoute);
 router.use('/opportunity', opportunityRoute);
 router.use('/sdg', sdgRoute);
 router.use('/skill', skillRoute);
+router.use('/interest-area', interestAreaRoute);
 
 export default router;

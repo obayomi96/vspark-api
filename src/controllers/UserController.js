@@ -43,8 +43,7 @@ class UserController {
     message.subject = 'WELCOME TO VOLUNTEERSPARK';
     message.html = `
       <p>Hello!</p>
-      <p>An account was just created for you as a ${type} on the Volunteerspark platform</p>
-      <p>We are so excited to have you and can't wait to get you connected with other organisations on out network.</p>
+      <p>An account was just created for you as an admin on the Volunteerspark platform</p>
       <p>Your password is <strong>${password}</strong>, you can update this password once you login</p>
       <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
       <br />
@@ -120,7 +119,6 @@ class UserController {
       message.html = `
         <p>Hello!</p>
         <p>You have an account as a ${type} on the Volunteerspark platform</p>
-        <p>We are so excited to have you and can't wait to get you connected with other organisations on out network.</p>
         <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
         <br />
         <strong>VolunteerSpark team</strong>

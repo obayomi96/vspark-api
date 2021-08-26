@@ -86,7 +86,21 @@ class ProjectController {
 
     return utils.successStat(res, 200, 'project', updateResponse);
   }
-  
+
+     /**
+   * @description Allows user get opportunitiess
+   * @param {Object} req - request object
+   * @param {Object} res - response object
+   * @returns {Object} returns Comments
+   * @memberof VolunteerController
+   */
+    static async fetchProjects(req, res) {
+      const projects = await models.Project.findAll();
+      if (!projects) {
+        return utils.errorStat(res, 404, 'No projects found');
+      }
+      return utils.successStat(res, 200, 'projects', projects);
+    }
 }
 
 export default ProjectController;

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT
   }, {});
   InterestArea.associate = (models) => {
-    InterestArea.belongsToMany(models.User, { as: 'volunteers', through: 'VolunteersInterestAreas', foreignKey: 'interestAreaId' });
+    InterestArea.belongsToMany(models.Volunteer, { as: 'volunteers', through: 'VolunteersInterestAreas', foreignKey: 'interestAreaId' });
   };
   return InterestArea;
 };

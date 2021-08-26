@@ -9,7 +9,6 @@ const {
   fetchProfile,
   confirmEmail,
   resetPassword,
-  fetchOpportunities
   // socialSignin
 } = NgoController;
 
@@ -28,7 +27,6 @@ ngoRoute.get('/:ngo_id',verifyNgo, fetchProfile);
 ngoRoute.patch('/:ngo_id', verifyNgo, updateProfile);
 ngoRoute.get('/confirm-email', verifyNgo, confirmEmail);
 ngoRoute.patch('/password-reset/:ngo_id', verifyNgo, resetPassword);
-ngoRoute.get('/opportunities', fetchOpportunities);
 // ngoRoute.post('/project', createProject);
 // ngoRoute.post('/opportunity', createOpportunities);
 
