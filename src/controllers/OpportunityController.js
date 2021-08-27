@@ -107,6 +107,14 @@ class OpportunityController {
       }
     );
 
+    await models.Volunteer.update(
+      {opportunityId: opportunity_id},
+      {
+        returning: true,
+        where: { id: parseInt(req.user.id, 10) }
+      }
+    );
+
     const updateResponse = await models.Opportunity.findOne({
       where: { id: parseInt(opportunity_id, 10) }
     });

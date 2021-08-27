@@ -3,7 +3,6 @@ import UserController from '../controllers/UserController';
 import middlewares from '../middlewares';
 
 const {
-  userSignup,
   userLogin,
   fetchOwnProfile,
   updateProfile,
@@ -20,7 +19,6 @@ const {
 
 const userRoute = express();
 
-userRoute.post('/register', userSignup);
 userRoute.post('/login', userLogin);
 userRoute.get('/:user_id', verifyToken, fetchOwnProfile);
 // userRoute.get('/', verifyToken, fetchUsers);

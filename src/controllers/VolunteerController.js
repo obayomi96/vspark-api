@@ -45,7 +45,7 @@ class VolunteerController {
       <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
       <br />
       <strong>VolunteerSpark team</strong>
-    `; ;
+    `;
   
     // implement emasil service
     await EmailService.sendEmail(email, message)
@@ -118,7 +118,7 @@ class VolunteerController {
         <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
         <br />
         <strong>VolunteerSpark team</strong>
-      `; ;
+      `;
     
     // implement emasil service
       await EmailService.sendEmail(user.email, message)
@@ -139,7 +139,7 @@ class VolunteerController {
           <p>Your email have been successfully verified. Kindly proceed to your account and update your profile</p>
           <br />
           <strong>VolunteerSpark team</strong>
-        `; ;
+        `;
     
         await EmailService.sendEmail(user.email, message)
 
@@ -203,7 +203,7 @@ class VolunteerController {
     }
 
     await models.Volunteer.update(
-      ...req.body,
+      req.body,
       {
         returning: true,
         where: {

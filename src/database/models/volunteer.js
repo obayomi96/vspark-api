@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     middlename: DataTypes.STRING,
     phonenumber: DataTypes.STRING,
     email: DataTypes.STRING,
-    passwords: DataTypes.STRING,
+    password: DataTypes.STRING,
     isVerified: DataTypes.BOOLEAN,
     type: DataTypes.STRING,
     country: DataTypes.STRING,
@@ -39,10 +39,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Volunteer.associate = function(models) {
     // associations can be defined here
-    Volunteer.hasMany(models.Skill, { as: 'skills', foreignKey: 'volunteerId' });
-    Volunteer.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'volunteerId' });
-    Volunteer.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'volunteerId' });
-    Volunteer.belongsTo(models.Opportunity, { as: 'opportunity', foreignKey: 'volunteerId' });
+    Volunteer.hasMany(models.Skill, { as: 'skills', foreignKey: 'skillId' });
+    Volunteer.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'sdgId' });
+    Volunteer.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'interestAreaId' });
+    Volunteer.belongsTo(models.Opportunity, { as: 'opportunity', foreignKey: 'opportunityId' });
   };
   return Volunteer;
 };
