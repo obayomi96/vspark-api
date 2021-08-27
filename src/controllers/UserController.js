@@ -12,53 +12,6 @@ const { Op } = sequelize;
  * @description Controlls all the user based activity
  */
 class UserController {
-  /**
-   * @static
-   * @description Allows a user to sign up
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
-   * @returns {Object} object containing user data and access Token
-   * @memberof UserController
-   */
-  static async userSignup(req, res) {
-    const { email, password, type } = req.body.user;
-
-    if (type !== 'volunteer' && type !== 'ngo') {
-      return utils.errorStat(res, 409, 'Specify account type, do you want to register as a NGO or Volunteer');
-    }
-    const existingUser = await models.User.findOne({
-      where: {
-        [Op.or]: [{ email }],
-      },
-    });
-    if (existingUser) {
-      return utils.errorStat(res, 409, 'User Already Exists');
-    }
-    const newUser = { ...req.body.user, password: auth.hashPassword(password) };
-    const user = await models.User.create(newUser);
-    const token = auth.generateToken({ id: user.id, email: user.email });
-
-    const message = {};
-    const verifyLink = `${process.env.APP_URL}/api/v1/users/confirmEmail?token=${token}&id=${user.id}`
-    message.subject = 'WELCOME TO VOLUNTEERSPARK';
-    message.html = `
-      <p>Hello!</p>
-      <p>An account was just created for you as an admin on the Volunteerspark platform</p>
-      <p>Your password is <strong>${password}</strong>, you can update this password once you login</p>
-      <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
-      <br />
-      <strong>VolunteerSpark team</strong>
-    `; ;
-  
-    // implement emasil service
-    await EmailService.sendEmail(email, message)
-
-    return utils.successStat(res, 201, 'user', {
-      id: user.id,
-      token,
-      email: user.email,
-    });
-  }
 
   /**
    * @static
@@ -69,7 +22,7 @@ class UserController {
    * @memberof UserController
    */
   static async userLogin(req, res) {
-    const { email, password } = req.body.user;
+    const { email, password } = req.body;
     const user = await models.User.findOne({ where: { email } });
 
     if (!user)
@@ -122,7 +75,7 @@ class UserController {
         <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
         <br />
         <strong>VolunteerSpark team</strong>
-      `; ;
+      `;
     
     // implement emasil service
       await EmailService.sendEmail(user.email, message)
@@ -143,7 +96,7 @@ class UserController {
           <p>Your email have been successfully verified. Kindly proceed to your account and update your profile</p>
           <br />
           <strong>VolunteerSpark team</strong>
-        `; ;
+        `;
     
         await EmailService.sendEmail(user.email, message)
 
@@ -192,10 +145,10 @@ class UserController {
       return utils.errorStat(res, 400, 'user_id is required');
     }
     const user = await models.User.findOne({
-      where: { id: user_id },
+      where: { id: parseInt(user_id, 10) },
     });
     if (!user) return utils.errorStat(res, 401, 'Profile not found');
-    if (adminUser.role !== 'super_admin') {
+    if (adminUser.type !== 'admin') {
       return utils.errorStat(res, 403, 'Unauthorized, admin only!');
     }
     return utils.successStat(res, 200, 'user', {
@@ -280,7 +233,7 @@ class UserController {
       const { oldPassword, newPassword } = req.body;
       const { user_id } = req.params;
       const { id } = req.user;
-      const user = await models.User.findOne({ where: { id: user_id } });
+      const user = await models.User.findOne({ where: { id: parseInt(user_id, 10) } });
       if (!user) return utils.errorStat(res, 404, 'No user found');
       if (parseInt(user_id, 10) !== id) {
         return utils.errorStat(res, 403, 'Unauthorized');
@@ -288,7 +241,7 @@ class UserController {
       const comparedPassword = auth.comparePassword(oldPassword, user.password)
       if (!comparedPassword) return utils.errorStat(res, 404, 'Old password incorrect');
       const hashedPassword = auth.hashPassword(newPassword);
-      await models.User.update({ password: hashedPassword }, { where: { id: user.id } });
+      await models.User.update({ password: hashedPassword }, { where: { id: parseInt(user_id, 10) } });
       return utils.successStat(res, 200, 'message', 'Success, Password Reset Successfully');
     }
 

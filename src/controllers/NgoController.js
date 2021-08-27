@@ -32,7 +32,6 @@ class NgoController {
     }
     const newUser = { ...req.body, password: auth.hashPassword(password) };
     const ngo = await models.Ngo.create(newUser);
-    console.log('neww', ngo)
 
     const token = auth.generateToken({ id: ngo.id, email: ngo.email });
 
@@ -117,7 +116,7 @@ class NgoController {
         <p>kindly click the link below to verify your email <p>${verifyLink}</p></p>
         <br />
         <strong>VolunteerSpark team</strong>
-      `; ;
+      `;
     
     // implement emasil service
       await EmailService.sendEmail(user.email, message)
@@ -138,7 +137,7 @@ class NgoController {
           <p>Your email have been successfully verified. Kindly proceed to your account and update your profile</p>
           <br />
           <strong>VolunteerSpark team</strong>
-        `; ;
+        `;
     
         await EmailService.sendEmail(user.email, message)
 
@@ -158,7 +157,6 @@ class NgoController {
    */
   static async fetchProfile(req, res) {
     const { ngo_id } = req.params;
-    // return console.log('lll', req.user)
     const { id } = req.user;
     if (!ngo_id) {
       return utils.errorStat(res, 400, 'ngo_id is required');
