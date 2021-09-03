@@ -42,6 +42,13 @@ class OpportunityController {
     }
     const opportunity = await models.Opportunity.findOne({
       where: { id: parseInt(opportunity_id, 10) },
+      include: [
+        {
+          as: 'volunteers',
+          model: models.Volunteer,
+          attributes: ['id', 'firstname', 'lastname', 'email'],
+        },
+      ],
     });
     if (!opportunity) return utils.errorStat(res, 401, 'opportunity not found');
     return utils.successStat(res, 200, 'opportunity', opportunity);
@@ -137,6 +144,16 @@ class OpportunityController {
             model: models.Volunteer,
             attributes: ['id', 'firstname', 'lastname', 'email'],
           },
+          {
+            as: 'project',
+            model: models.Project,
+            attributes: ['id', 'type', 'about'],
+          },
+          {
+            as: 'skills',
+            model: models.Skill,
+            attributes: ['id', 'name'],
+          }
         ],
       });
       if (!opportunities) {

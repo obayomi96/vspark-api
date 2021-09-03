@@ -5,10 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT
   }, {});
   Skill.associate = (models) => {
-    Skill.belongsToMany(models.Volunteer, 
+    Skill.hasMany(models.Volunteer, 
       { 
       as: 'volunteers', 
-      through: 'VolunteerSkills',
       foreignKey: 'skillId' 
       }
     );
