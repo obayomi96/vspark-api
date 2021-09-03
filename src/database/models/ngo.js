@@ -33,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
     interestAreaId: DataTypes.INTEGER,
   }, {});
   Ngo.associate = function(models) {
-    Ngo.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'sdgId' });
-    Ngo.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'interestAreaId' });
+    Ngo.belongsToMany(models.Sdg, { as: 'sdgs', through: 'ngoSdgs', foreignKey: 'sdgId' });
+    Ngo.belongsToMany(models.InterestArea, { as: 'interestAreas', through: 'ngoInterestAreas', foreignKey: 'interestAreaId' });
   };
   return Ngo;
 };
