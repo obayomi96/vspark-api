@@ -166,6 +166,18 @@ class NgoController {
     }
     const profile = await models.Ngo.findOne({
       where: { id: ngo_id },
+      include: [
+        {
+          as: 'sdgs',
+          model: models.Sdg,
+          attributes: ['id', 'name', 'description'],
+        },
+        {
+          as: 'interestAreas',
+          model: models.InterestArea,
+          attributes: ['id', 'name', 'description'],
+        }
+      ]
     });
     if (!profile) return utils.errorStat(res, 401, 'Profile not found');
     return utils.successStat(res, 200, 'profile', profile);

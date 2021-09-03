@@ -43,6 +43,23 @@ class ProjectController {
       }
       const project = await models.Project.findOne({
         where: { id: parseInt(project_id, 10) },
+        include: [
+          {
+            as: 'sdgs',
+            model: models.Sdg,
+            attributes: ['id', 'name', 'description'],
+          },
+          {
+            as: 'skills',
+            model: models.Skill,
+            attributes: ['id', 'name', 'description'],
+          },
+          {
+            as: 'interestAreas',
+            model: models.InterestArea,
+            attributes: ['id', 'name', 'description'],
+          }
+        ]
       });
       if (!project) return utils.errorStat(res, 401, 'project not found');
       return utils.successStat(res, 200, 'project', project);
@@ -95,7 +112,25 @@ class ProjectController {
    * @memberof VolunteerController
    */
     static async fetchProjects(req, res) {
-      const projects = await models.Project.findAll();
+      const projects = await models.Project.findAll({
+        include: [
+          {
+            as: 'sdgs',
+            model: models.Sdg,
+            attributes: ['id', 'name', 'description'],
+          },
+          {
+            as: 'skills',
+            model: models.Skill,
+            attributes: ['id', 'name', 'description'],
+          },
+          {
+            as: 'interestAreas',
+            model: models.InterestArea,
+            attributes: ['id', 'name', 'description'],
+          }
+        ]
+      });
       if (!projects) {
         return utils.errorStat(res, 404, 'No projects found');
       }
