@@ -48,6 +48,16 @@ class OpportunityController {
           model: models.Volunteer,
           attributes: ['id', 'firstname', 'lastname', 'email'],
         },
+        {
+          as: 'project',
+          model: models.Project,
+          attributes: ['id', 'type', 'about'],
+        },
+        {
+          as: 'skills',
+          model: models.Skill,
+          attributes: ['id', 'name'],
+        }
       ],
     });
     if (!opportunity) return utils.errorStat(res, 401, 'opportunity not found');
