@@ -168,6 +168,23 @@ class VolunteerController {
     }
     const profile = await models.Volunteer.findOne({
       where: { id: volunteer_id },
+      include: [
+        {
+          as: 'sdgs',
+          model: models.Sdg,
+          attributes: ['id', 'name', 'description'],
+        },
+        {
+          as: 'skills',
+          model: models.Skill,
+          attributes: ['id', 'name', 'description'],
+        },
+        {
+          as: 'interestAreas',
+          model: models.InterestArea,
+          attributes: ['id', 'name', 'description'],
+        }
+      ]
     });
     if (!profile) return utils.errorStat(res, 401, 'Profile not found');
     return utils.successStat(res, 200, 'profile', profile);
