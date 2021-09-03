@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT
   }, {});
   Sdg.associate = (models) => {
-    Sdg.belongsToMany(models.User, { as: 'volunteers', through: 'VolunteerSdgs', foreignKey: 'sdgId' });
+    Sdg.belongsToMany(models.Volunteer, { as: 'volunteers', through: 'VolunteerSdgs', foreignKey: 'sdgId' });
   };
   return Sdg;
 };

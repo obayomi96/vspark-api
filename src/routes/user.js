@@ -36,3 +36,4 @@ userRoute.patch('/password-reset/:user_id', verifyToken, resetPassword);
 // userRoute.get('/facebook/callback', passport.authenticate('facebook', { session: false }), socialSignin);
 
 export default userRoute;
+

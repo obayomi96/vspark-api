@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     Volunteer.hasMany(models.Skill, { as: 'skills', foreignKey: 'skillId' });
     Volunteer.hasMany(models.Sdg, { as: 'sdgs', foreignKey: 'sdgId' });
     Volunteer.hasMany(models.InterestArea, { as: 'interestAreas', foreignKey: 'interestAreaId' });
-    Volunteer.belongsTo(models.Opportunity, { as: 'opportunity', foreignKey: 'opportunityId' });
+    Volunteer.belongsTo(models.Opportunity, { as: 'opportunityApplied', foreignKey: 'opportunityId' });
   };
   return Volunteer;
 };

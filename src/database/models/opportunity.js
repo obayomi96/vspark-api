@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Opportunity.associate = function(models) {
     Opportunity.hasMany(models.Skill, { as: 'skills', foreignKey: 'opportunityId' });
     Opportunity.hasMany(models.Volunteer, { as: 'volunteers', foreignKey: 'opportunityId' });
+    Opportunity.belongsTo(models.Project, { as: 'project', foreignKey: 'projectId' });
   };
   return Opportunity;
 };
