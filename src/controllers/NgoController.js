@@ -226,7 +226,7 @@ class NgoController {
 
     const updateResponse = await models.Ngo.findOne({
       where: {
-        [Op.and]: [{ id }, { id: ngo_id }],
+        [Op.and]: [{ id }, { id: parseInt(ngo_id, 10) }],
       },
     });
 
@@ -289,6 +289,55 @@ class NgoController {
       name, email, isVerified
     })}`);
   }
+
+  //     /**
+  // * @static
+  // * @description Allows a user to sign in with social accounts
+  // * @param {Object} req - Request object
+  // * @param {Object} res - Response object
+  // * @param {function} next next function to be called
+  // * @returns {Object} object containing user data and access Token
+  // * @memberof NgoController
+  // */
+  //   static async imageUpload(req, res) {
+  //   const { profilePhoto, headerPhoto } = req.body;
+  //   const { id } = req.user;
+  //   const user = await models.User.findOne({
+  //     where: {
+  //       [Op.and]: [{ id: parseInt(user_id, 10) }, { id }],
+  //     },
+  //   });
+
+  //   if (!user) {
+  //     return utils.errorStat(res, 404, 'user not found.');
+  //   }
+
+  //   if (user.isVerified === false) {
+  //     return utils.errorStat(res, 404, 'You need to verify your email first');
+  //   }
+
+  //   if (profilePhoto) {
+
+  //   }
+
+  //   await models.User.update(
+  //     { profilePhoto, headerPhoto },
+  //     {
+  //       returning: true,
+  //       where: {
+  //         [Op.and]: [{ id: parseInt(id, 10) }, { id }],
+  //       },
+  //     }
+  //   );
+
+  //   const updateResponse = await models.User.findOne({
+  //     where: {
+  //       [Op.and]: [{ id }, { id: parseInt(id, 10) }],
+  //     },
+  //   });
+
+  //   return utils.successStat(res, 200, 'profile', updateResponse);
+  // }
 
 }
 

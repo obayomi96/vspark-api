@@ -5,6 +5,7 @@ import cors from 'cors';
 import errorhandler from 'errorhandler';
 import debug from 'debug';
 import morgan from 'morgan';
+import passport from 'passport';
 import routes from './routes';
 import dotenv from 'dotenv';
 
@@ -21,6 +22,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 if (isProduction) {
   app.use(errorhandler());

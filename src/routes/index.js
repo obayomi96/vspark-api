@@ -6,9 +6,13 @@ import projectRoute from './project';
 import opportunityRoute from './opportunity';
 import sdgRoute from './sdg';
 import skillRoute from './skill';
-import interestAreaRoute from './interestArea'
+import interestAreaRoute from './interestArea';
+import imageRoute from './image';
+import { cloudinaryConfig } from '../database/config/cloudinaryConfig';
 
 const router = express();
+
+router.use('*', cloudinaryConfig);
 
 router.get('/', (req, res) =>
   res.status(200).json({
@@ -25,5 +29,6 @@ router.use('/opportunity', opportunityRoute);
 router.use('/sdg', sdgRoute);
 router.use('/skill', skillRoute);
 router.use('/interest-area', interestAreaRoute);
+router.use('/image', imageRoute);
 
 export default router;
