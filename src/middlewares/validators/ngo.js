@@ -47,10 +47,7 @@ export const validateProfileUpdate = [
   check('interestAreaId', 'interestAreaId is required')
     .exists()
     .isString(),
-  check('type', 'type is required')
-    .exists()
-    .isString()
-    .oneOf([
+  oneOf([
       check('type').equals('profit').trim(),
       check('type').equals('non-profit').trim()
     ], typeMessage),

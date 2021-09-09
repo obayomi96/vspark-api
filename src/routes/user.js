@@ -18,17 +18,24 @@ const {
   isAdmin
 } = middlewares;
 
-const {  validateUser : { validateUserAuth } , handleValidation } = validators;
+const { 
+  validateUser: { 
+    validateUserAuth,
+    validateProfileFetch,
+    validateProfileUpdate,
+    validatePasswordReset
+  },
+  handleValidation } = validators;
 
 const userRoute = express();
 
 userRoute.post('/login', validateUserAuth, handleValidation, userLogin);
-userRoute.get('/:user_id', verifyToken, fetchOwnProfile);
+userRoute.get('/:user_id', validateProfileFetch, handleValidation, verifyToken, fetchOwnProfile);
 // userRoute.get('/', verifyToken, fetchUsers);
-userRoute.patch('/:user_id', verifyToken, updateProfile);
-userRoute.get('/admin/:user_id', verifyToken, isAdmin, fetchProfile);
+userRoute.patch('/:user_id', validateProfileUpdate, handleValidation, verifyToken, updateProfile);
+userRoute.get('/admin/:user_id',  verifyToken, isAdmin, fetchProfile);
 userRoute.get('/confirm-email', verifyToken, confirmEmail);
-userRoute.patch('/password-reset/:user_id', verifyToken, resetPassword);
+userRoute.patch('/password-reset/:user_id', validatePasswordReset, handleValidation, verifyToken, resetPassword);
 // userRoute.get('/google', passport.authenticate('google', {
 //   scope:
 //   ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
