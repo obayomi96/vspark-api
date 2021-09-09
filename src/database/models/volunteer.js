@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
   Volunteer.associate = function(models) {
     // associations can be defined here
     Volunteer.belongsToMany(models.Skill, { as: 'skills', through: 'volunteerSkills', foreignKey: 'skillId' });
-    Volunteer.belongsToMany(models.Sdg, { as: 'sdgs', through: 'sdgId', foreignKey: 'sdgId' });
+    Volunteer.belongsToMany(models.Sdg, { as: 'sdgs', through: 'volunteerSdgs', foreignKey: 'sdgId' });
     Volunteer.belongsToMany(models.InterestArea, { as: 'interestAreas',  through: 'volunteerInterestAreas', foreignKey: 'interestAreaId' });
     Volunteer.belongsTo(models.Opportunity, { as: 'opportunityApplied', foreignKey: 'opportunityId' });
   };
