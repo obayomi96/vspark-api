@@ -1,6 +1,7 @@
 import express from 'express';
 import NgoController from '../controllers/NgoController';
 import middlewares from '../middlewares';
+import validators from '../middlewares/validators'
 
 const {
   ngoLogin,
@@ -19,14 +20,23 @@ const {
   verifyNgo,
 } = middlewares;
 
+const { 
+  validateNgo: { 
+    validateNgoAuth,
+    validateProfileFetch,
+    validateProfileUpdate,
+    validatePasswordReset
+  },
+  handleValidation } = validators;
+
 const ngoRoute = express();
 
-ngoRoute.post('/register', ngoSignup);
-ngoRoute.post('/login', ngoLogin);
-ngoRoute.get('/:ngo_id',verifyNgo, fetchProfile);
-ngoRoute.patch('/:ngo_id', verifyNgo, updateProfile);
+ngoRoute.post('/register', validateNgoAuth, handleValidation, ngoSignup);
+ngoRoute.post('/login', validateNgoAuth, handleValidation, ngoLogin);
+ngoRoute.get('/:ngo_id', validateProfileFetch, handleValidation, verifyNgo, fetchProfile);
+ngoRoute.patch('/:ngo_id', validateProfileUpdate, handleValidation, verifyNgo, updateProfile);
 ngoRoute.get('/confirm-email', verifyNgo, confirmEmail);
-ngoRoute.patch('/password-reset/:ngo_id', verifyNgo, resetPassword);
+ngoRoute.patch('/password-reset/:ngo_id', validatePasswordReset, handleValidation, verifyNgo, resetPassword);
 // ngoRoute.post('/project', createProject);
 // ngoRoute.post('/opportunity', createOpportunities);
 
