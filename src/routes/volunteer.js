@@ -1,6 +1,7 @@
 import express from 'express';
 import VolunteerController from '../controllers/VolunteerController';
 import middlewares from '../middlewares';
+import validators from '../middlewares/validators'
 
 const {
   volunteerLogin,
@@ -18,10 +19,12 @@ const {
   verifyVolunteer
 } = middlewares;
 
+const {  validateVolunteer: { validateVolunteerAuth } , handleValidation } = validators;
+
 const volunteerRoute = express();
 
-volunteerRoute.post('/register', volunteerSignup);
-volunteerRoute.post('/login', volunteerLogin);
+volunteerRoute.post('/register', validateVolunteerAuth, handleValidation, volunteerSignup);
+volunteerRoute.post('/login', validateVolunteerAuth, handleValidation, volunteerLogin);
 volunteerRoute.get('/:volunteer_id', verifyVolunteer, fetchProfile);
 volunteerRoute.patch('/:volunteer_id', verifyVolunteer, updateProfile);
 volunteerRoute.get('/confirm-email', verifyVolunteer, confirmEmail);

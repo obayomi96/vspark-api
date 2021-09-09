@@ -1,6 +1,7 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
 import middlewares from '../middlewares';
+import validators from '../middlewares/validators'
 
 const {
   userLogin,
@@ -17,9 +18,11 @@ const {
   isAdmin
 } = middlewares;
 
+const {  validateUser : { validateUserAuth } , handleValidation } = validators;
+
 const userRoute = express();
 
-userRoute.post('/login', userLogin);
+userRoute.post('/login', validateUserAuth, handleValidation, userLogin);
 userRoute.get('/:user_id', verifyToken, fetchOwnProfile);
 // userRoute.get('/', verifyToken, fetchUsers);
 userRoute.patch('/:user_id', verifyToken, updateProfile);
