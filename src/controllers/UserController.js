@@ -205,7 +205,7 @@ class UserController {
 
     const updateResponse = await models.User.findOne({
       where: {
-        [Op.and]: [{ id }, { id: user_id }],
+        [Op.and]: [{ id }, { id: parseInt(user_id, 10) }],
       },
     });
 
