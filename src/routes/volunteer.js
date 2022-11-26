@@ -1,6 +1,7 @@
 import express from 'express';
 import VolunteerController from '../controllers/VolunteerController';
 import middlewares from '../middlewares';
+import validators from '../middlewares/validators'
 
 const {
   volunteerLogin,
@@ -13,19 +14,26 @@ const {
 } = VolunteerController;
 
 const {
-  verifyToken,
-  isAdmin,
   verifyVolunteer
 } = middlewares;
 
+const { 
+  validateVolunteer: { 
+    validateVolunteerAuth,
+    validateProfileFetch,
+    validateProfileUpdate,
+    validatePasswordReset
+  },
+  handleValidation } = validators;
+
 const volunteerRoute = express();
 
-volunteerRoute.post('/register', volunteerSignup);
-volunteerRoute.post('/login', volunteerLogin);
-volunteerRoute.get('/:volunteer_id', verifyVolunteer, fetchProfile);
-volunteerRoute.patch('/:volunteer_id', verifyVolunteer, updateProfile);
+volunteerRoute.post('/register', validateVolunteerAuth, handleValidation, volunteerSignup);
+volunteerRoute.post('/login', validateVolunteerAuth, handleValidation, volunteerLogin);
+volunteerRoute.get('/:volunteer_id', validateProfileFetch, handleValidation, verifyVolunteer, fetchProfile);
+volunteerRoute.patch('/:volunteer_id', validateProfileUpdate, handleValidation, verifyVolunteer, updateProfile);
 volunteerRoute.get('/confirm-email', verifyVolunteer, confirmEmail);
-volunteerRoute.patch('/password-reset/:volunteer_id', verifyVolunteer, resetPassword);
+volunteerRoute.patch('/password-reset/:volunteer_id', validatePasswordReset, handleValidation, verifyVolunteer, resetPassword);
 // volunteerRoute.get('/google', passport.authenticate('google', {
 //   scope:
 //   ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
